@@ -19,7 +19,7 @@ jobs:
 
       - name: 安装依赖
         run: |
-          pip install pyinstaller requests tkinter
+          pip install -r requirements.txt
 
       - name: 打包应用
         run: |

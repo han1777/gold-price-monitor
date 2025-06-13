@@ -1,5 +1,22 @@
+<!--
+ * @Author: hbh
+ * @Date: 2025-06-13 15:32:00
+ * @LastEditors: hbh
+ * @LastEditTime: 2025-06-13 15:56:05
+ * @FilePath: \gold-price-monitor\README.md
+ * @Description: 
+-->
 # gold-price-monitor
 京东金融的民生/浙商实时金价监控
+
+目录结构
+```markdown
+gold-price-monitor/
+├── gold_price_monitor.py
+├── app.icns                # 图标文件（macOS 专用）
+├── requirements.txt        # 依赖列表
+└── README.md
+```
 
 
 ## 打包命令

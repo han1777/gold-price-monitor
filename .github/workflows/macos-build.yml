@@ -1,58 +1,58 @@
 name: Build macOS App
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 jobs:
-  build-mac:
-    runs-on: macos-latest
-    steps:
-      - name: 检出代码
-        uses: actions/checkout@v3
+    build-mac:
+        runs-on: macos-latest
+        steps:
+            - name: 检出代码
+              uses: actions/checkout@v3
 
-      - name: 安装 Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+            - name: 安装 Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: '3.10'
 
-      - name: 安装依赖
-        run: |
-          pip install -r requirements.txt
+            - name: 安装依赖
+              run: |
+                  pip install -r requirements.txt
 
-      - name: 打包应用
-        run: |
-          pyinstaller --noconfirm --onefile --windowed --icon=app.icns gold_price_monitor.py
+            - name: 打包应用
+              run: |
+                  pyinstaller --noconfirm --onefile --windowed --icon=app.icns gold_price_monitor.py
 
-      - name: 创建 .app 包（可选）
-        run: |
-          mkdir -p dist/gold_price_monitor.app/Contents/MacOS
-          cp dist/gold_price_monitor dist/gold_price_monitor.app/Contents/MacOS/
-          cat > dist/gold_price_monitor.app/Contents/Info.plist <<EOL
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>CFBundleExecutable</key>
-    <string>gold_price_monitor</string>
-    <key>CFBundleIconFile</key>
-    <string>app.icns</string>
-    <key>CFBundleIdentifier</key>
-    <string>com.example.goldpricemonitor</string>
-    <key>CFBundleName</key>
-    <string>金价监控</string>
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-</dict>
-</plist>
-EOL
-          if [ -f "app.icns" ]; then
-              cp app.icns dist/gold_price_monitor.app/Contents/
-          fi
+            - name: 创建 .app 包（可选）
+              run: |
+                  mkdir -p dist/gold_price_monitor.app/Contents/MacOS
+                  cp dist/gold_price_monitor dist/gold_price_monitor.app/Contents/MacOS/
 
-      - name: 上传构建产物
-        uses: actions/upload-artifact@v3
-        with:
-          name: gold_price_monitor_mac
-          path: dist/
+                  echo '<?xml version="1.0" encoding="UTF-8"?>' > dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '<plist version="1.0">' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '<dict>' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '    <key>CFBundleExecutable</key>' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '    <string>gold_price_monitor</string>' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '    <key>CFBundleIconFile</key>' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '    <string>app.icns</string>' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '    <key>CFBundleIdentifier</key>' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '    <string>com.example.goldpricemonitor</string>' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '    <key>CFBundleName</key>' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '    <string>金价监控</string>' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '    <key>CFBundlePackageType</key>' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '    <string>APPL</string>' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '</dict>' >> dist/gold_price_monitor.app/Contents/Info.plist
+                  echo '</plist>' >> dist/gold_price_monitor.app/Contents/Info.plist
+
+                  if [ -f "app.icns" ]; then
+                      cp app.icns dist/gold_price_monitor.app/Contents/
+                  fi
+
+            - name: 上传构建产物
+              uses: actions/upload-artifact@v3
+              with:
+                  name: gold_price_monitor_mac
+                  path: dist/
